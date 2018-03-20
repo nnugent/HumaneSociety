@@ -12,20 +12,20 @@ namespace HumaneSociety
         internal static void RunEmployeeQueries(Employee employee, string condition)
         {
             HumaneSocietyDataContext context = new HumaneSocietyDataContext();
-            var employeeResult = (from x in context.Employees where x.ID == employee.ID select x).FirstOrDefault();
+            var employeeResult = (from x in context.Employees where x.employeeNumber == employee.employeeNumber select x).FirstOrDefault();
             if(condition == "update" || condition == "create")
             {
                 employeeResult = employee;
+                context.Employees.InsertOnSubmit(employeeResult);
             }
-            else if(condition == "remove")
+            else if(condition == "delete")
             {
-                employeeResult = null;
+                context.Employees.DeleteOnSubmit(employeeResult);
             }
             else if (condition == "read")
             {
                 employeeResult.ToString();
             }
-            context.Employees.InsertOnSubmit(employeeResult);
             context.SubmitChanges();
         }
 
@@ -46,7 +46,7 @@ namespace HumaneSociety
             throw new NotImplementedException();
         }
 
-        internal static void Adopt(object animal, Client client)
+        internal static void Adopt(Animal animal, Client client)
         {
             throw new NotImplementedException();
         }

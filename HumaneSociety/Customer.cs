@@ -13,7 +13,7 @@ namespace HumaneSociety
         {
             if (CheckIfNewUser())
             {
-                CreateClient();
+                //CreateClient();
                 LogInPreExistingUser();
             }
             else
@@ -69,35 +69,35 @@ namespace HumaneSociety
                     ApplyForAdoption();
                     RunUserMenus();
                     return;
-                case 4:
-                    CheckAdoptionStatus();
-                    RunUserMenus();
-                    return;
+                //case 4:
+                //    CheckAdoptionStatus();
+                //    RunUserMenus();
+                //    return;
                 default:
                     UserInterface.DisplayUserOptions("Input not accepted please try again");
                     return;
             }
         }
 
-        private void CheckAdoptionStatus()
-        {
-            var pendingAdoptions = Query.GetUserAdoptionStatus(client).ToList();
-            if (pendingAdoptions.Count == 0)
-            {
-                UserInterface.DisplayUserOptions("No adoptions currently pending");
-            }
-            else
-            {
-                List<string> Adoptions = new List<string>();
-                foreach(ClientAnimalJunction junction in pendingAdoptions)
-                {
-                    Adoptions.Add(junction.Animal1.name + " " + junction.Animal1.Breed1.breed1 + " " + junction.approvalStatus);
-                }
-                UserInterface.DisplayUserOptions(Adoptions);
-                UserInterface.DisplayUserOptions("press enter to continue");
-                Console.ReadLine();
-            }
-        }
+        //private void CheckAdoptionStatus()
+        //{
+        //    var pendingAdoptions = Query.GetUserAdoptionStatus(client).ToList();
+        //    if (pendingAdoptions.Count == 0)
+        //    {
+        //        UserInterface.DisplayUserOptions("No adoptions currently pending");
+        //    }
+        //    else
+        //    {
+        //        List<string> Adoptions = new List<string>();
+        //        foreach(ClientAnimalJunction junction in pendingAdoptions)
+        //        {
+        //            Adoptions.Add(junction.Animal1.name + " " + junction.Animal1.Breed1.breed1 + " " + junction.approvalStatus);
+        //        }
+        //        UserInterface.DisplayUserOptions(Adoptions);
+        //        UserInterface.DisplayUserOptions("press enter to continue");
+        //        Console.ReadLine();
+        //    }
+        //}
 
         private void ApplyForAdoption()
         {
@@ -199,109 +199,109 @@ namespace HumaneSociety
             }
 
         }
-        private static int GetState()
-        {
-            UserInterface.DisplayUserOptions("Please enter your state (abbreviation or full state name");
-            string state = UserInterface.GetUserInput();
-            var states = Query.GetStates();
-            var stateNames = from territory in states select territory.name.ToLower();
-            var stateAbrreviations = from territory in states select territory.abbrev;
-            if (stateNames.ToList().Contains(state.ToLower()) || stateAbrreviations.ToList().Contains(state.ToUpper()))
-            {
-                try
-                {
-                    var stateReturn = from territory in states where territory.name.ToLower() == state.ToLower() select territory.ID;
-                    int stateNumber = stateReturn.ToList()[0];
-                    return stateNumber;
-                }
-                catch
-                {
-                    var stateReturn = from territory in states where territory.abbrev == state.ToUpper() select territory.ID;
-                    int stateNumber = stateReturn.ToList()[0];
-                    return stateNumber;
-                }
-            }
-            else
-            {
-                Console.Clear();
-                UserInterface.DisplayUserOptions("State not Found");
-                return GetState();
-            }
-        }
-        public bool CreateClient()
-        {
-            try
-            {
-                var clients = Query.RetrieveClients();
-                var clientUsernames = from client in clients select client.userName;
-                string username = GetUserName();
-                string email = GetEmail();
-                Console.Clear();
-                UserInterface.DisplayUserOptions("Please enter password (Warning password is CaSe SeNsItIvE)");
-                string password = UserInterface.GetUserInput();
-                UserInterface.DisplayUserOptions("Enter your first name.");
-                string firstName = UserInterface.GetUserInput();
-                UserInterface.DisplayUserOptions("Enter your last name.");
-                string lastName = UserInterface.GetUserInput();
-                int zipCode = GetZipCode();
-                int state = GetState();
-                UserInterface.DisplayUserOptions("Please enter your street address");
-                string streetAddress = UserInterface.GetUserInput();
-                Query.AddNewClient(firstName, lastName, username, password, email, streetAddress, zipCode, state);
-                Console.Clear();
-                UserInterface.DisplayUserOptions("Profile successfully added");
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public bool CreateClient(IQueryable<Client> clients)
-        {
-            try
-            {
-                var clientUsernames = from client in clients select client.userName;
-                var clientEmails = from client in clients select client.email;
-                string username = GetUserName();
-                string email = GetEmail();
-                if (CheckForForValue(clientUsernames.ToList(), username))
-                {
-                    Console.Clear();
-                    UserInterface.DisplayUserOptions("Username already in use please try another username");
-                    return CreateClient(clients);
-                }
-                else if (CheckForForValue(clientEmails.ToList(), email))
-                {
-                    Console.Clear();
-                    UserInterface.DisplayUserOptions("Email already in use please try another email or contact support for forgotten account info");
-                    return CreateClient(clients);
-                }
-                else
-                {
-                    Console.Clear();
-                    UserInterface.DisplayUserOptions("Please enter password (Warning password is CaSe SeNsItIvE)");
-                    string password = UserInterface.GetUserInput();
-                    UserInterface.DisplayUserOptions("Enter your first name.");
-                    string firstName = UserInterface.GetUserInput();
-                    UserInterface.DisplayUserOptions("Enter your last name.");
-                    string lastName = UserInterface.GetUserInput();
-                    int zipCode = GetZipCode();
-                    int state = GetState();
-                    UserInterface.DisplayUserOptions("Please enter your street address");
-                    string streetAddress = UserInterface.GetUserInput();
-                    Query.AddNewClient(firstName, lastName, username, password, email, streetAddress, zipCode, state);
-                    Console.Clear();
-                    UserInterface.DisplayUserOptions("Profile successfully added");
+        //private static int GetState()
+        //{
+        //    UserInterface.DisplayUserOptions("Please enter your state (abbreviation or full state name");
+        //    string state = UserInterface.GetUserInput();
+        //    var states = Query.GetStates();
+        //    var stateNames = from territory in states select territory.name.ToLower();
+        //    var stateAbrreviations = from territory in states select territory.abbrev;
+        //    if (stateNames.ToList().Contains(state.ToLower()) || stateAbrreviations.ToList().Contains(state.ToUpper()))
+        //    {
+        //        try
+        //        {
+        //            var stateReturn = from territory in states where territory.name.ToLower() == state.ToLower() select territory.ID;
+        //            int stateNumber = stateReturn.ToList()[0];
+        //            return stateNumber;
+        //        }
+        //        catch
+        //        {
+        //            var stateReturn = from territory in states where territory.abbrev == state.ToUpper() select territory.ID;
+        //            int stateNumber = stateReturn.ToList()[0];
+        //            return stateNumber;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.Clear();
+        //        UserInterface.DisplayUserOptions("State not Found");
+        //        return GetState();
+        //    }
+        //}
+        //public bool CreateClient()
+        //{
+        //    try
+        //    {
+        //        var clients = Query.RetrieveClients();
+        //        var clientUsernames = from client in clients select client.userName;
+        //        string username = GetUserName();
+        //        string email = GetEmail();
+        //        Console.Clear();
+        //        UserInterface.DisplayUserOptions("Please enter password (Warning password is CaSe SeNsItIvE)");
+        //        string password = UserInterface.GetUserInput();
+        //        UserInterface.DisplayUserOptions("Enter your first name.");
+        //        string firstName = UserInterface.GetUserInput();
+        //        UserInterface.DisplayUserOptions("Enter your last name.");
+        //        string lastName = UserInterface.GetUserInput();
+        //        int zipCode = GetZipCode();
+        //        int state = GetState();
+        //        UserInterface.DisplayUserOptions("Please enter your street address");
+        //        string streetAddress = UserInterface.GetUserInput();
+        //        Query.AddNewClient(firstName, lastName, username, password, email, streetAddress, zipCode, state);
+        //        Console.Clear();
+        //        UserInterface.DisplayUserOptions("Profile successfully added");
+        //        return true;
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //}
+        //public bool CreateClient(IQueryable<Client> clients)
+        //{
+        //    try
+        //    {
+        //        var clientUsernames = from client in clients select client.userName;
+        //        var clientEmails = from client in clients select client.email;
+        //        string username = GetUserName();
+        //        string email = GetEmail();
+        //        if (CheckForForValue(clientUsernames.ToList(), username))
+        //        {
+        //            Console.Clear();
+        //            UserInterface.DisplayUserOptions("Username already in use please try another username");
+        //            return CreateClient(clients);
+        //        }
+        //        else if (CheckForForValue(clientEmails.ToList(), email))
+        //        {
+        //            Console.Clear();
+        //            UserInterface.DisplayUserOptions("Email already in use please try another email or contact support for forgotten account info");
+        //            return CreateClient(clients);
+        //        }
+        //        else
+        //        {
+        //            Console.Clear();
+        //            UserInterface.DisplayUserOptions("Please enter password (Warning password is CaSe SeNsItIvE)");
+        //            string password = UserInterface.GetUserInput();
+        //            UserInterface.DisplayUserOptions("Enter your first name.");
+        //            string firstName = UserInterface.GetUserInput();
+        //            UserInterface.DisplayUserOptions("Enter your last name.");
+        //            string lastName = UserInterface.GetUserInput();
+        //            int zipCode = GetZipCode();
+        //            int state = GetState();
+        //            UserInterface.DisplayUserOptions("Please enter your street address");
+        //            string streetAddress = UserInterface.GetUserInput();
+        //            Query.AddNewClient(firstName, lastName, username, password, email, streetAddress, zipCode, state);
+        //            Console.Clear();
+        //            UserInterface.DisplayUserOptions("Profile successfully added");
 
-                }
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        //        }
+        //        return true;
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //}
         public void UpdateClientInfo()
         {
             List<string> options = new List<string>() { "What would you like to update? (Please enter number of option)", "1: Name", "2: Address", "3: Email", "4: Username", "5: Password", "6: Income", "7: Kids", "8: Home Size", "9. back" };
@@ -328,9 +328,9 @@ namespace HumaneSociety
                 case 1:
                     UpdateName();
                     break;
-                case 2:
-                    UpdateAddress();
-                    break;
+                //case 2:
+                //    UpdateAddress();
+                //    break;
                 case 3:
                     UpdateEmail();
                     break;
@@ -444,17 +444,17 @@ namespace HumaneSociety
             UserInterface.DisplayUserOptions("Current address:");
             UserInterface.DisplayUserOptions($"{address}, {zipCode}, {state}");
         }
-        public void UpdateAddress()
-        {
-            Console.Clear();
-            DisplayCurrentAddress(client);
-            client.UserAddress1.zipcode = GetZipCode();
-            client.UserAddress1.USStates = GetState();
-            UserInterface.DisplayUserOptions("Please enter your street address");
-            client.UserAddress1.addessLine1 = UserInterface.GetUserInput();
-            Query.UpdateAddress(client);
+        //public void UpdateAddress()
+        //{
+        //    Console.Clear();
+        //    DisplayCurrentAddress(client);
+        //    client.UserAddress1.zipcode = GetZipCode();
+        //    client.UserAddress1.USStates = GetState();
+        //    UserInterface.DisplayUserOptions("Please enter your street address");
+        //    client.UserAddress1.addessLine1 = UserInterface.GetUserInput();
+        //    Query.UpdateAddress(client);
 
-        }
+        //}
         public void UpdateName()
         {
             Console.Clear();
