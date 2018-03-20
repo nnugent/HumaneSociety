@@ -9,14 +9,31 @@ namespace HumaneSociety
 {
     public static class Query
     {
-        internal static void RunEmployeeQueries(Employee employee, string v)
+        internal static void RunEmployeeQueries(Employee employee, string condition)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var employeeResult = (from x in context.Employees where x.ID == employee.ID select x).FirstOrDefault();
+            if(condition == "update" || condition == "create")
+            {
+                employeeResult = employee;
+            }
+            else if(condition == "remove")
+            {
+                employeeResult = null;
+            }
+            else if (condition == "read")
+            {
+                employeeResult.ToString();
+            }
+            context.Employees.InsertOnSubmit(employeeResult);
+            context.SubmitChanges();
         }
 
         internal static Client GetClient(string userName, string password)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var client = (from x in context.Clients where x.userName == userName && x.pass == password select x).First();
+            return client;
         }
 
         internal static Client GetUserAdoptionStatus(Client client)
@@ -89,7 +106,7 @@ namespace HumaneSociety
             throw new NotImplementedException();
         }
 
-        internal static object GetShots(Animal animal)
+        internal static List<Shot> GetShots(Animal animal)
         {
             throw new NotImplementedException();
         }

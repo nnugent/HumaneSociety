@@ -43,6 +43,7 @@ namespace HumaneSociety
         {
 
         }
+
         protected IQueryable<Animal> SearchForAnimal()
         {
             HumaneSocietyDataContext context = new HumaneSocietyDataContext();
