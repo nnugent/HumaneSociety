@@ -120,9 +120,10 @@ namespace HumaneSociety
             context.SubmitChanges();
         }
 
-        internal static List<Animal> GetPendingAdoptions()
+        internal static Table<ClientAnimalJunction> GetPendingAdoptions()
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            return context.ClientAnimalJunctions;
         }
 
         internal static void UpdateLastName(Client client)
