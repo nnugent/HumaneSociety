@@ -53,12 +53,16 @@ namespace HumaneSociety
 
         internal static List<Client> RetrieveClients()
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var resultList = (from c in context.Clients where c != null select c).ToList();
+            return resultList;
         }
 
-        internal static object GetStates()
+        internal static List<USState> GetStates()
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var resultList = (from c in context.USStates where c != null select c).ToList();
+            return resultList;
         }
 
         internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int state)
@@ -108,7 +112,12 @@ namespace HumaneSociety
 
         internal static List<Shot> GetShots(Animal animal)
         {
-            throw new NotImplementedException();
+            List<Shot> resultList = new List<Shot>(); ; 
+            for(int i = 0; i < animal.AnimalShotJunctions.Count; i++)
+            {
+                resultList.Add(animal.AnimalShotJunctions[i].Shot);
+            }
+            return resultList; 
         }
 
         internal static void UpdateShot(string v, Animal animal)
