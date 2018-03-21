@@ -36,17 +36,21 @@ namespace HumaneSociety
             return client;
         }
 
-        internal static Client GetUserAdoptionStatus(Client client)
+        internal static bool GetUserAdoptionStatus(Client client)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var adoption = (from a in context.ClientAnimalJunctions where client.userName == a.approvalStatus select a).First();
+            return true;
         }
 
         internal static Animal GetAnimalByID(int iD)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var animal = (from a in context.Animals where a.ID == iD select a).First();
+            return animal;
         }
 
-        internal static void Adopt(object animal, Client client)
+        internal static void Adopt(Animal animal, Client client)
         {
             throw new NotImplementedException();
         }
@@ -58,7 +62,9 @@ namespace HumaneSociety
 
         internal static object GetStates()
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var state = (from s in context.UserAddresses where s.USStates == s.USStates select s).First();
+            return state;
         }
 
         internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int state)
@@ -73,22 +79,46 @@ namespace HumaneSociety
 
         internal static void UpdateUsername(Client client)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var updatedUserName = (from uSN in context.Clients where uSN.userName == client.userName select uSN).First();
+            if (updatedUserName != null)
+            {
+                context.Clients.InsertOnSubmit(updatedUserName);
+            }
+            context.SubmitChanges();
         }
 
         internal static void UpdateEmail(Client client)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var updatedEmail = (from uE in context.Clients where uE.email == client.email select uE).First();
+            if (updatedEmail != null)
+            {
+                context.Clients.InsertOnSubmit(updatedEmail);
+            }
+            context.SubmitChanges();
         }
 
         internal static void UpdateAddress(Client client)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var updatedAddress = (from uA in context.Clients where uA.userAddress == client.userAddress select uA).First();
+            if (updatedAddress != null)
+            {
+                context.Clients.InsertOnSubmit(updatedAddress);
+            }
+            context.SubmitChanges();
         }
 
         internal static void UpdateFirstName(Client client)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var updatedFirstName = (from uFN in context.Clients where uFN.firstName == client.firstName select uFN).First();
+            if (updatedFirstName != null)
+            {
+                context.Clients.InsertOnSubmit(updatedFirstName);
+            }
+            context.SubmitChanges();
         }
 
         internal static List<Animal> GetPendingAdoptions()
@@ -98,7 +128,13 @@ namespace HumaneSociety
 
         internal static void UpdateLastName(Client client)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var updatedLastName = (from uLN in context.Clients where uLN.lastName == client.lastName select uLN).First();
+            if (updatedLastName != null)
+            {
+                context.Clients.InsertOnSubmit(updatedLastName);
+            }
+            context.SubmitChanges();
         }
 
         internal static void UpdateAdoption(bool v, ClientAnimalJunction clientAnimalJunction)
