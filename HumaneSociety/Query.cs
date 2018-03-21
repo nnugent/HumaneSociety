@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
+using System.Data;
+using System.Data.Linq;
 
 namespace HumaneSociety
 {
@@ -36,11 +35,9 @@ namespace HumaneSociety
             return client;
         }
 
-        internal static bool GetUserAdoptionStatus(Client client)
+        internal static  EntitySet<ClientAnimalJunction> GetUserAdoptionStatuses(Client client)
         {
-            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
-            var adoption = (from a in context.ClientAnimalJunctions where client.userName == a.approvalStatus select a).First();
-            return true;
+            return client.ClientAnimalJunctions;
         }
 
         internal static Animal GetAnimalByID(int iD)
@@ -144,14 +141,9 @@ namespace HumaneSociety
             throw new NotImplementedException();
         }
 
-        internal static List<Shot> GetShots(Animal animal)
+        internal static EntitySet<AnimalShotJunction> GetShots(Animal animal)
         {
-            List<Shot> resultList = new List<Shot>(); ; 
-            for(int i = 0; i < animal.AnimalShotJunctions.Count; i++)
-            {
-                resultList.Add(animal.AnimalShotJunctions[i].Shot);
-            }
-            return resultList; 
+            return animal.AnimalShotJunctions; 
         }
 
         internal static void UpdateShot(string v, Animal animal)

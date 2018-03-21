@@ -9,7 +9,7 @@ namespace HumaneSociety
     class UserEmployee : User
     {
         Employee employee;
-        
+
         public override void LogIn()
         {
             if (CheckIfNewUser())
@@ -26,7 +26,7 @@ namespace HumaneSociety
         }
         protected override void RunUserMenus()
         {
-            List<string> options = new List<string>() { "What would you like to do? (select number of choice)", "1. Add animal", "2. Remove Anmial", "3. Check Animal Status",  "4. Approve Adoption" };
+            List<string> options = new List<string>() { "What would you like to do? (select number of choice)", "1. Add animal", "2. Remove Anmial", "3. Check Animal Status", "4. Approve Adoption" };
             UserInterface.DisplayUserOptions(options);
             string input = UserInterface.GetUserInput();
             RunUserInput(input);
@@ -47,10 +47,10 @@ namespace HumaneSociety
                     CheckAnimalStatus();
                     RunUserMenus();
                     return;
-                //case "4":
-                //    CheckAdoptions();
-                //    RunUserMenus();
-                //    return;
+                case "4":
+                    CheckAdoptions();
+                    RunUserMenus();
+                    return;
                 default:
                     UserInterface.DisplayUserOptions("Input not accepted please try again");
                     RunUserMenus();
@@ -58,26 +58,25 @@ namespace HumaneSociety
             }
         }
 
-        //private void CheckAdoptions()
-        //{
-        //    Console.Clear();
-        //    List<string> adoptionInfo = new List<string>();
-        //    int counter = 1;
-        //    var adoptions = Query.GetPendingAdoptions().ToList();
-        //    if(adoptions.Count > 0)
-        //    {
-        //        foreach(ClientAnimalJunction data in adoptions)
-        //        {
-        //            adoptionInfo.Add($"{counter}. {data.Client1.firstName} {data.Client1.lastName}, {data.Animal1.name} {data.Animal1.Breed1}");
-        //            counter++;
-        //        }
-        //        UserInterface.DisplayUserOptions(adoptionInfo);
-        //        UserInterface.DisplayUserOptions("Enter the number of the adoption you would like to approve");
-        //        int input = UserInterface.GetIntegerData();
-        //        ApproveAdoption(adoptions[input - 1]);
-        //    }
-
-        //}
+        private void CheckAdoptions()
+        {
+            Console.Clear();
+            List<string> adoptionInfo = new List<string>();
+            int counter = 1;
+            var adoptions = Query.GetPendingAdoptions().ToList();
+            if (adoptions.Count > 0)
+            {
+                foreach (ClientAnimalJunction data in adoptions)
+                {
+                    adoptionInfo.Add($"{counter}. {data.Client1.firstName} {data.Client1.lastName}, {data.Animal1.name} {data.Animal1.Breed1}");
+                    counter++;
+                }
+                UserInterface.DisplayUserOptions(adoptionInfo);
+                UserInterface.DisplayUserOptions("Enter the number of the adoption you would like to approve");
+                int input = UserInterface.GetIntegerData();
+                ApproveAdoption(adoptions[input - 1]);
+            }
+        }
 
         private void ApproveAdoption(ClientAnimalJunction clientAnimalJunction)
         {
@@ -98,7 +97,7 @@ namespace HumaneSociety
         {
             Console.Clear();
             var animals = SearchForAnimal().ToList();
-            if(animals.Count > 1)
+            if (animals.Count > 1)
             {
                 UserInterface.DisplayUserOptions("Several animals found");
                 UserInterface.DisplayAnimals(animals);
@@ -107,7 +106,7 @@ namespace HumaneSociety
                 CheckAnimalStatus(ID);
                 return;
             }
-            if(animals.Count == 0)
+            if (animals.Count == 0)
             {
                 UserInterface.DisplayUserOptions("Animal not found please use different search criteria");
                 return;
@@ -119,7 +118,8 @@ namespace HumaneSociety
         {
             bool isFinished = false;
             Console.Clear();
-            while(!isFinished){
+            while (!isFinished)
+            {
                 List<string> options = new List<string>() { "Animal found:", animal.name, animal.Breed1.Catagory1.catagory1, animal.Breed1.breed1, animal.Breed1.pattern, "Would you like to:", "1. Get Info", "2. Update Info", "3. Check shots", "4. Return" };
                 UserInterface.DisplayUserOptions(options);
                 int input = UserInterface.GetIntegerData();
@@ -134,7 +134,7 @@ namespace HumaneSociety
 
         private void RunCheckMenuInput(int input, Animal animal)
         {
-            
+
             switch (input)
             {
                 case 1:
@@ -145,41 +145,41 @@ namespace HumaneSociety
                     UpdateAnimal(animal);
                     Console.Clear();
                     return;
-                //case 3:
-                //    CheckShots(animal);
-                //    Console.Clear();
-                //    return;
+                case 3:
+                    CheckShots(animal);
+                    Console.Clear();
+                    return;
                 default:
                     UserInterface.DisplayUserOptions("Input not accepted please select a menu choice");
                     return;
             }
         }
 
-        //private void CheckShots(Animal animal)
-        //{
-        //    List<string> shotInfo = new List<string>();
-        //    var shots = Query.GetShots(animal);
-        //    foreach(AnimalShotJunction shot in shots.ToList())
-        //    {
-        //        shotInfo.Add($"{shot.Shot.name} Date: {shot.dateRecieved}");
-        //    }
-        //    if(shotInfo.Count > 0)
-        //    {
-        //        UserInterface.DisplayUserOptions(shotInfo);
-        //        if(UserInterface.GetBitData("Would you like to Update shots?"))
-        //        {
-        //            Query.UpdateShot("booster", animal);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (UserInterface.GetBitData("Would you like to Update shots?"))
-        //        {
-        //            Query.UpdateShot("booster", animal);
-        //        }
-        //    }
-            
-        //}
+        private void CheckShots(Animal animal)
+        {
+            List<string> shotInfo = new List<string>();
+            var shots = Query.GetShots(animal);
+            foreach (AnimalShotJunction shot in shots.ToList())
+            {
+                shotInfo.Add($"{shot.Shot.name} Date: {shot.dateRecieved}");
+            }
+            if (shotInfo.Count > 0)
+            {
+                UserInterface.DisplayUserOptions(shotInfo);
+                if (UserInterface.GetBitData("Would you like to Update shots?"))
+                {
+                    Query.UpdateShot("booster", animal);
+                }
+            }
+            else
+            {
+                if (UserInterface.GetBitData("Would you like to Update shots?"))
+                {
+                    Query.UpdateShot("booster", animal);
+                }
+            }
+
+        }
 
         private void UpdateAnimal(Animal animal)
         {
@@ -187,7 +187,7 @@ namespace HumaneSociety
             List<string> options = new List<string>() { "Select Updates: (Enter number and choose finished when finished)", "1. Category", "2. Breed", "3. Name", "4. Age", "5. Demeanor", "6. Kid friendly", "7. Pet friendly", "8. Weight", "9. Finished" };
             UserInterface.DisplayUserOptions(options);
             string input = UserInterface.GetUserInput();
-            if(input.ToLower() == "9" ||input.ToLower() == "finished")
+            if (input.ToLower() == "9" || input.ToLower() == "finished")
             {
                 Query.EnterUpdate(animal, updates);
             }
@@ -212,7 +212,7 @@ namespace HumaneSociety
         private IQueryable<Animal> SearchForAnimal(int iD)
         {
             HumaneSocietyDataContext context = new HumaneSocietyDataContext();
-             var animals = (from data in context.Animals where data.ID == iD select data);
+            var animals = (from data in context.Animals where data.ID == iD select data);
             return animals;
         }
 
@@ -274,7 +274,7 @@ namespace HumaneSociety
                 UserInterface.DisplayUserOptions("Employee not found, please try again, create a new user or contact your administrator");
                 LogIn();
             }
-            
+
         }
         private void CreateNewEmployee()
         {
