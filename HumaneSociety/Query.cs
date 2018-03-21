@@ -12,20 +12,20 @@ namespace HumaneSociety
         internal static void RunEmployeeQueries(Employee employee, string condition)
         {
             HumaneSocietyDataContext context = new HumaneSocietyDataContext();
-            var employeeResult = (from x in context.Employees where x.ID == employee.ID select x).FirstOrDefault();
+            var employeeResult = (from x in context.Employees where x.employeeNumber == employee.employeeNumber select x).FirstOrDefault();
             if(condition == "update" || condition == "create")
             {
                 employeeResult = employee;
+                context.Employees.InsertOnSubmit(employeeResult);
             }
-            else if(condition == "remove")
+            else if(condition == "delete")
             {
-                employeeResult = null;
+                context.Employees.DeleteOnSubmit(employeeResult);
             }
             else if (condition == "read")
             {
                 employeeResult.ToString();
             }
-            context.Employees.InsertOnSubmit(employeeResult);
             context.SubmitChanges();
         }
 
@@ -57,14 +57,16 @@ namespace HumaneSociety
 
         internal static List<Client> RetrieveClients()
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext context = new HumaneSocietyDataContext();
+            var resultList = (from c in context.Clients where c != null select c).ToList();
+            return resultList;
         }
 
-        internal static object GetStates()
+        internal static List<USState> GetStates()
         {
             HumaneSocietyDataContext context = new HumaneSocietyDataContext();
-            var state = (from s in context.UserAddresses where s.USStates == s.USStates select s).First();
-            return state;
+            var resultList = (from c in context.USStates where c != null select c).ToList();
+            return resultList;
         }
 
         internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int state)
@@ -144,7 +146,12 @@ namespace HumaneSociety
 
         internal static List<Shot> GetShots(Animal animal)
         {
-            throw new NotImplementedException();
+            List<Shot> resultList = new List<Shot>(); ; 
+            for(int i = 0; i < animal.AnimalShotJunctions.Count; i++)
+            {
+                resultList.Add(animal.AnimalShotJunctions[i].Shot);
+            }
+            return resultList; 
         }
 
         internal static void UpdateShot(string v, Animal animal)

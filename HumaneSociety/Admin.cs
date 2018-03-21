@@ -134,6 +134,7 @@ namespace HumaneSociety
             {
                 Console.Clear();
                 UserInterface.DisplayUserOptions("Employee addition unsuccessful please try again or type exit;");
+                Console.ReadLine();
                 return;
             }
         }
